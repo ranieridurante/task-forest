@@ -1,0 +1,47 @@
+{
+  "name": "assets",
+  "module": "tailwind.config.js",
+  "type": "module",
+  "devDependencies": {
+    "@andypf/json-viewer": "^2.1.5",
+    "@eslint/js": "^9.10.0",
+    "@stylistic/eslint-plugin": "^2.8.0",
+    "@types/bun": "latest",
+    "@types/react-copy-to-clipboard": "^5.0.7",
+    "@types/react-syntax-highlighter": "^15.5.13",
+    "date-fns": "^4.1.0",
+    "eslint": "^9.10.0",
+    "eslint-plugin-react": "^7.35.2",
+    "globals": "^15.9.0",
+    "typescript-eslint": "^8.5.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@babel/preset-env": "^7.24.5",
+    "@nextui-org/react": "^2.3.6",
+    "@types/md5": "^2.3.5",
+    "@types/node": "^20.12.11",
+    "@types/phoenix": "^1.6.4",
+    "@types/phoenix_live_view": "^0.18.4",
+    "@types/react": "^18.3.1",
+    "@types/react-dom": "^18.3.0",
+    "@visx/network": "^3.3.0",
+    "cronstrue": "^2.61.0",
+    "elkjs": "^0.9.3",
+    "framer-motion": "^11.1.9",
+    "iconify-icon": "^2.1.0",
+    "markdown-to-jsx": "^7.4.7",
+    "md5": "^2.3.0",
+    "react": "^18.3.1",
+    "react-copy-to-clipboard": "^5.1.0",
+    "react-dom": "^18.3.1",
+    "react-syntax-highlighter": "^15.5.0",
+    "react-vis-network-graph": "^3.0.1",
+    "reactflow": "^11.11.4",
+    "swiper": "^11.2.1",
+    "topbar": "^2.0.2",
+    "vis-network": "^9.1.9"
+  }
+}
