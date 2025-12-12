@@ -1,0 +1,43 @@
+<%= case @live_action do %>
+  <% :api_documentation -> %>
+    <%= if Accounts.user_has_permission(@active_company, ["workflow_api_integrator"]) do %>
+      <%= live_react_component(
+        "Components.APIDocumentationPage",
+        [
+          props: %{
+            workflow: @workflow,
+            company_auth_token: @company_auth_token,
+            shortcuts: @shortcuts
+          }
+        ],
+        id: "api-documentation-page"
+      ) %>
+    <% else %>
+      <div class="h-[60vh] w-full flex justify-center items-center">
+        <p class="text-plombDarkBrown-200">
+          You do not have permission to view API documentation for workflows. Ask your administrator for access.
+        </p>
+      </div>
+    <% end %>
+  <% :app_dashboard -> %>
+    <%= if Accounts.user_has_permission(@active_company, ["workflow_builder", "workflow_api_integrator", "workflow_user"]) do %>
+      <%= live_react_component(
+        "Components.AppDashboardPage",
+        [
+          props: %{
+            workflow: @workflow,
+            shortcuts: @shortcuts,
+            workflow_id: @workflow.id,
+            executions: @executions,
+            workflow_inputs_definition: @workflow.inputs_definition,
+            scheduled_triggers: @scheduled_triggers,
+            total_executions: @workflow_stats.total_executions,
+            execution_time: @workflow_stats.execution_time,
+            failed_tasks: @workflow_stats.task_errors,
+            active_triggers: @workflow_stats.active_triggers
+          }
+        ],
+        id: "app-dashboard-page"
+      ) %>
+    <% end %>
+<% end %>

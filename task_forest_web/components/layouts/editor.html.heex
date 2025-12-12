@@ -1,0 +1,76 @@
+<header class="container mx-auto lg:max-w-full">
+  <div class="flex justify-center sm:hidden my-[0.5rem]">
+    <img src="/images/plomb-logo.svg" alt="Plomb.ai Logo" class="w-12" />
+  </div>
+</header>
+<main class="container mx-auto lg:max-w-full pl-4">
+  <.flash_group flash={@flash} />
+  <div class="mx-auto flex flex-row">
+    <%= if @user_info do %>
+      <div id="sidebar" class="hidden sm:block mx-[-1rem] mt-6">
+        <%= live_react_component(
+          "Components.Sidebar",
+          [
+            props: %{
+              user_info: @user_info,
+              user_companies: @user_companies,
+              active_company: @active_company,
+              allow_org_switch: false,
+              render_logo: true
+            }
+          ],
+          id: "sidebar"
+        ) %>
+        <div id="close-sidebar-container" class="justify-center mt-8 hidden">
+          <button id="close-sidebar" class="m-2 p-2 bg-plombPink-300 rounded-full flex sm:hidden items-center">
+            <iconify-icon icon="mdi:close" width="28" height="28" class="flex items-center justify-center text-white">
+            </iconify-icon>
+          </button>
+        </div>
+      </div>
+      <div
+        id="sidebar-toggle"
+        class="cursor-pointer bg-plombLightBrown-200 p-1 text-center m-[-1rem] flex sm:hidden justify-center"
+        style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px);"
+      >
+        <p
+          class="text-plombYellow-700"
+          style="writing-mode: vertical-rl; transform: rotate(180deg); font-size: small; letter-spacing: 2px; text-align: center !important; font-family: inherit;"
+        >
+          CLICK TO OPEN SIDEBAR
+        </p>
+      </div>
+      <script>
+        document.getElementById('sidebar-toggle').addEventListener('click', function() {
+          const sidebar = document.getElementById('sidebar');
+          if (sidebar.classList.contains('hidden')) {
+            sidebar.classList.remove('hidden');
+            document.getElementById('close-sidebar-container').classList.remove('hidden');
+            this.style.display = 'none';
+            this.style.textAlign = 'center'; // Align text to the center
+          }
+        });
+      </script>
+      <script>
+        document.getElementById('close-sidebar').addEventListener('click', function() {
+          document.getElementById('sidebar').classList.add('hidden');
+          document.getElementById('sidebar-toggle').style.display = 'flex';
+          document.getElementById('sidebar').classList.add('justify-center');
+          document.getElementById('sidebar-toggle').style.textAlign = 'center';
+        });
+      </script>
+    <% end %>
+    <div class="w-full mt-2">
+      <%= if assigns[:routes] != nil and assigns[:routes] != [] do %>
+        <div className="mb-8">
+          <%= live_react_component(
+            "Components.NavigationBreadcrumbs",
+            [props: %{routes: @routes}],
+            id: "navigation-breadcrumbs"
+          ) %>
+        </div>
+      <% end %>
+      <%= @inner_content %>
+    </div>
+  </div>
+</main>

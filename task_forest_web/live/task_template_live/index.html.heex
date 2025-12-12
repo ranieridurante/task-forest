@@ -1,0 +1,146 @@
+<.header>
+  Listing Task templates
+  <:actions>
+    <.link patch={~p"/admin/task-templates/new"}>
+      <.button>New Task Template</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<div class="filter-controls bg-white shadow-lg rounded-lg p-6">
+  <label for="provider-filter" class="block text-sm font-semibold text-gray-800 mb-3">
+    Filter by Provider
+  </label>
+  <form phx-change="filter_by_provider">
+    <select
+      id="provider-filter"
+      name="provider"
+      class="block w-full px-4 py-3 text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent transition ease-in-out duration-150"
+    >
+      <option value="">All Providers</option>
+      <%= for provider <- @providers do %>
+        <option value={provider} selected={provider == @selected_provider}>
+          <%= provider %>
+        </option>
+      <% end %>
+    </select>
+  </form>
+</div>
+
+<div class="pagination-controls mt-8 flex items-center justify-center space-x-4">
+  <button
+    :if={@current_page != 1}
+    phx-click={JS.push("previous_page")}
+    class="px-5 py-2 bg-indigo-500 text-white rounded-full shadow-md hover:bg-indigo-600 transition duration-300 ease-in-out"
+  >
+    Previous
+  </button>
+  <span class="text-lg font-medium text-gray-700">
+    Page <%= @current_page %> of <%= @total_pages %>
+  </span>
+  <button
+    :if={@current_page != @total_pages}
+    phx-click={JS.push("next_page")}
+    class="px-5 py-2 bg-indigo-500 text-white rounded-full shadow-md hover:bg-indigo-600 transition duration-300 ease-in-out"
+  >
+    Next
+  </button>
+</div>
+
+<.table
+  id="task_templates"
+  rows={@streams.task_templates}
+  row_click={fn {_id, task_template} -> JS.navigate(~p"/admin/task-templates/#{task_template}") end}
+  class="min-w-full bg-white shadow-md rounded-lg overflow-hidden"
+>
+  <:col :let={data} label="Provider Logo">
+    <%= if elem(data, 1).provider do %>
+      <img src={elem(data, 1).provider.logo} class="w-10 h-10 object-cover rounded-full" alt="" />
+    <% end %>
+  </:col>
+  <:col :let={data} label="Provider">
+    <p class="text-sm text-gray-700">
+      <%= elem(data, 1).provider_slug %>
+    </p>
+  </:col>
+  <:col :let={data} label="Featured?">
+    <p class="text-sm text-gray-700">
+      <%= if elem(data, 1).featured, do: "FEATURED" %>
+    </p>
+  </:col>
+  <:col :let={data} label="Access Type">
+    <p class="text-sm text-gray-700">
+      <%= elem(data, 1).access_type %>
+    </p>
+  </:col>
+  <:col :let={data} label="Type">
+    <p class="text-sm text-gray-700"><%= "#{elem(data, 1).config["type"]}" %></p>
+  </:col>
+  <:col :let={data} label="Name">
+    <p class={
+      if String.contains?(elem(data, 1).name, ["DRAFT", "Draft", "draft"]) do
+        "text-md font-semibold text-red-500"
+      else
+        "text-md font-semibold text-gray-800"
+      end
+    }>
+      <%= elem(data, 1).name %>
+    </p>
+  </:col>
+
+  <:action :let={{_id, task_template}}>
+    <.link navigate={~p"/admin/task-templates/#{task_template}"} class="text-indigo-600 hover:text-indigo-900">
+      Show
+    </.link>
+  </:action>
+  <:action :let={{_id, task_template}}>
+    <.link patch={~p"/admin/task-templates/#{task_template}/edit"} class="text-indigo-600 hover:text-indigo-900">
+      Edit
+    </.link>
+  </:action>
+  <:action :let={{id, task_template}}>
+    <.link
+      phx-click={JS.push("delete", value: %{id: task_template.id}) |> hide("##{id}")}
+      data-confirm="Are you sure?"
+      class="text-red-600 hover:text-red-900"
+    >
+      Delete
+    </.link>
+  </:action>
+</.table>
+
+<div class="pagination-controls mt-8 flex items-center justify-center space-x-4">
+  <button
+    :if={@current_page != 1}
+    phx-click={JS.push("previous_page")}
+    class="px-5 py-2 bg-indigo-500 text-white rounded-full shadow-md hover:bg-indigo-600 transition duration-300 ease-in-out"
+  >
+    Previous
+  </button>
+  <span class="text-lg font-medium text-gray-700">
+    Page <%= @current_page %> of <%= @total_pages %>
+  </span>
+  <button
+    :if={@current_page != @total_pages}
+    phx-click={JS.push("next_page")}
+    class="px-5 py-2 bg-indigo-500 text-white rounded-full shadow-md hover:bg-indigo-600 transition duration-300 ease-in-out"
+  >
+    Next
+  </button>
+</div>
+
+<.modal
+  :if={@live_action in [:new, :edit]}
+  id="task_template-modal"
+  show
+  on_cancel={JS.patch(~p"/admin/task-templates")}
+>
+  <.live_component
+    module={TaskForestWeb.TaskTemplateLive.FormComponent}
+    id={@task_template.id || :new}
+    title={@page_title}
+    action={@live_action}
+    task_template={@task_template}
+    patch={~p"/admin/task-templates"}
+  />
+</.modal>

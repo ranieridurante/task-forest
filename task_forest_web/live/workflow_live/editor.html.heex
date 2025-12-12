@@ -1,0 +1,16 @@
+<%= live_react_component(
+  "Components.WorkflowEditorPage",
+  [
+    props: %{
+      workflow: @workflow,
+      initial_nodes: @initial_nodes,
+      initial_edges: @initial_edges,
+      user_task_templates: @user_task_templates,
+      routes: @routes,
+      active_providers: @active_providers,
+      featured_providers: @featured_providers
+    }
+  ],
+  id: "workflow-editor-page",
+  merge_props: true
+) %>

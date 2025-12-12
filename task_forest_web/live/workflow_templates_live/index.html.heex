@@ -1,0 +1,54 @@
+<.header>
+  Listing Workflow templates
+  <:actions>
+    <.link patch={~p"/admin/workflow-templates/new"}>
+      <.button>New Workflow templates</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table
+  id="workflow_template"
+  rows={@streams.workflow_templates_list}
+  row_click={
+    fn {_id, workflow_template} ->
+      JS.navigate(~p"/admin/workflow-templates/#{workflow_template}")
+    end
+  }
+>
+  <:col :let={{_id, workflow_template}} label="Name">
+    <p class="text-sm text-gray-700">
+      <%= workflow_template.name %>
+    </p>
+  </:col>
+  <:action :let={{_id, workflow_template}}>
+    <div class="sr-only">
+      <.link navigate={~p"/admin/workflow-templates/#{workflow_template}"}>Show</.link>
+    </div>
+    <.link patch={~p"/admin/workflow-templates/#{workflow_template}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={{id, workflow_template}}>
+    <.link
+      phx-click={JS.push("delete", value: %{id: workflow_template.id}) |> hide("##{id}")}
+      data-confirm="Are you sure?"
+    >
+      Delete
+    </.link>
+  </:action>
+</.table>
+
+<.modal
+  :if={@live_action in [:new, :edit]}
+  id="workflow_template-modal"
+  show
+  on_cancel={JS.patch(~p"/admin/workflow-templates")}
+>
+  <.live_component
+    module={TaskForestWeb.WorkflowTemplatesLive.FormComponent}
+    id={@workflow_template.id || :new}
+    title={@page_title}
+    action={@live_action}
+    workflow_template={@workflow_template}
+    patch={~p"/admin/workflow-templates"}
+  />
+</.modal>

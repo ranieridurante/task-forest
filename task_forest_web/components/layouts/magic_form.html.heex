@@ -1,0 +1,18 @@
+<main class="container mx-auto lg:max-w-full pl-4">
+  <.flash_group flash={@flash} />
+  <div class="mx-auto flex flex-row">
+    <div class="w-full my-10">
+      <%= @inner_content %>
+    </div>
+  </div>
+  <footer class="bottom-0 w-full mb-6">
+    <div class="flex justify-center items-center my-4 flex-col">
+      <p class="text-center text-plombPink-500 font-sans text-sm">
+        Create your own magic forms using
+      </p>
+      <a href="https://plomb.ai" target="_blank" class="flex justify-center">
+        <img src="/images/plomb-logo.svg" alt="Plomb.ai Logo" class="w-16 ml-2 mt-2" />
+      </a>
+    </div>
+  </footer>
+</main>

@@ -1,0 +1,11 @@
+<div class="magic-forms-container">
+  <%= live_react_component(
+    "Components.MagicFormsPage",
+    [
+      props: %{
+        magic_forms: @magic_forms
+      }
+    ],
+    id: "magic-forms-page"
+  ) %>
+</div>

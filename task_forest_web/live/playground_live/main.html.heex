@@ -1,0 +1,11 @@
+<%= if Accounts.user_has_permission(@active_company, ["workflow_api_integrator"]) do %>
+  <%= live_react_component(
+    "Components.WorkflowPlayground",
+    [
+      props: %{
+        workflow: @workflow
+      }
+    ],
+    id: "workflow-playground"
+  ) %>
+<% end %>
